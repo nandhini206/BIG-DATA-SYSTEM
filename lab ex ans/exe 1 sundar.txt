@@ -1,0 +1,222 @@
+Creating table and insertion:
+i) Creating Employee table with the following fields:
+
+[eno,ename,edob,eage,egender,esal,eadd,dno] and insert fifteen records
+create table employee(eno integer primary key,ename varchar(20),edob date,eage integer,egender
+
+char,esal integer,eadd varchar(50),dno integer foreign key references department(dno))
+ii) Creating Department table with the following fields: [dno,dname,dhead,dlocation] and
+insert any five records
+create table department(dno integer primary key,dname varchar(20),dhead varchar(15),dloc varchar(20))
+-------------------------------------------------------------------------------
+Insert values in employee table:
+
+insert all
+into employee values(100,'krishna','12-apr-1994',25,'M',15000,'happy street,madurai',1)
+into employee values(115, 'kesav', '12-Apr-1990', 40, 'M', 25000, '123 Main St, mysore', 1)
+into employee values(101, 'radha', '25-Jul-1985', 25, 'F', 28000, '456 Oak St, chennai', 2)
+into employee values(102, 'Manoj', '18-Nov-1982', 48, 'M', 30000, '789 Elm St, trichy', 3)
+into employee values(103, 'meera', '03-Mar-1995', 25, 'F', 22000, '101 Pine St, Sikkim', 4)
+into employee values(104, 'shyam', '09-Sep-1988', 32, 'M', 27000, '202 Birch St, Hyderabad', 5)
+into employee values(105, 'rukmini', '15-Jun-1992', 28, 'F', 26000, '303 Cedar St, County', 6)
+into employee values(106, 'vittal', '22-Dec-1987', 33, 'M', 29000, '404 Spruce St, trivandrum', 5)
+into employee values(107, 'abi', '29-Oct-1997', 43, 'F', 21000, '505 Maple St, salem', 3)
+into employee values(108, 'gopal', '14-Feb-1980', 40, 'M', 32000, '606 Redwood St, madurai', 4)
+into employee values(109, 'siva', '08-May-1993', 28, 'F', 24000, '707 Walnut St, chennai', 8)
+into employee values(110, 'hirtick', '20-Aug-1984', 56, 'M', 28000, '808 Oakwood St, mysore', 5)
+into employee values(111, 'raji', '10-Jan-1991', 59, 'F', 23000, '909 Pinecone St, ozoor', 9)
+into employee values(112, 'raju', '17-Jul-1986', 46, 'M', 26000, '1010 Cedarwood St, coimbatore', 6)
+into employee values(113, 'gaju', '05-Mar-1994', 26, 'M', 20000, '1111 Elmwood St, dindigul', 2)
+select * from dual
+-------------------------------------------------------------------------------
+Insert values in department table:
+insert all
+into department values(1, 'frontend', 'Krishna', 'Madurai')
+into department values(2, 'backend', 'Ramesh', 'Chennai')
+into department values(3, 'design', 'meera', 'Bangalore')
+into department values(4, 'testing', 'Arjun', 'Hyderabad')
+into department values(5, 'analytics', 'Priya', 'Delhi')
+into department values(3, 'devops', 'vittal', 'Mumbai')
+into department values(2, 'security', 'giri', 'Kolkata')
+into department values(1, 'fullstack', 'Siva', 'Pune')
+into department values(5, 'cloud', 'suresh', 'Jaipur')
+into department values(2, 'fullstack', 'Vishnu', 'Chennai')
+into department values(3, 'analytics', 'Durga', 'Mumbai')
+into department values(5, 'devops', 'Kartik', 'Lucknow')
+into department values(4, 'frontend', 'radha', 'Bhopal')
+into department values(1, 'backend', 'Ganesh', 'Patna')
+select * from dual
+-------------------------------------------------------------------------------
+Selecting Records
+1) Display all the employee details.
+select * from employee
+OUTPUT
+2) Display all department information.
+select * from departments
+OUTPUT
+3) Display eno,ename and esal details from employee table
+select eno,ename,esal from employee
+OUTPUT
+4) Display the all female employee name list.
+select ename from employee where egender='F'
+OUTPUT
+5. Display the all employee details whose eno less than 105.
+select * from employee where eno<105
+OUTPUT
+6) Display the all male employee names whose age greater than 45.
+select ename from employee where egender='M' and eage>45
+OUTPUT
+7) List out the name of the employee who is belongs to the department no 3.
+select ename from employee where dno=3
+OUTPUT
+8) List out all the department number uniquely from the employee table.
+select unique(dno) from employee
+OUTPUT
+9) List out the department number and their head in-charges.
+select dno,dhead from department
+OUTPUT
+10) Display the total number of employees working in the company.
+select count(eno) from employee
+OUTPUT
+11) Display the total number of employees working in the department no 2
+select count(eno) from employee where dno=2
+OUTPUT
+12) Display the names of the employee who is working in department number 3
+select ename from employee where dno=3 and eage>40
+OUTPUT
+13) Display the names of the employee who’s getting salary between 2000 and 5000
+select ename from employee where esal between 20000 and 25000
+OUTPUT
+14) Display the names of the employee whose is not belongs to either department number 1
+or 2.
+SELECT ename FROM employee WHERE dno NOT IN (1, 2);
+OUTPUT
+15) Who is getting maximum salary in the company.
+SELECT ename FROM employee WHERE esal = (SELECT MAX(esal) FROM employee);
+OUTPUT
+16) Who is getting minimum salary in the company.
+SELECT ename,esal FROM employee WHERE esal = (SELECT MIN(esal) FROM employee);
+OUTPUT
+17) Who is getting maximum salary in the department number
+SELECT ename FROM employee WHERE esal = (SELECT MAX(esal) FROM employee WHERE dno
+=1 );
+OUTPUT
+18) What is the average salary the company given to the employee
+SELECT AVG(esal) AS average_salary FROM employee;
+OUTPUT
+19) List out the employee names whose name is starts with the character “s”
+SELECT ename FROM employee WHERE ename LIKE 's%';
+OUTPUT
+20. List out the employee names whose name is ends with the character “n”.
+SELECT ename FROM employee WHERE ename LIKE '%n';
+OUTPUT
+21. Display the employee details who is living either in Madurai or Trichy
+SELECT * FROM employee WHERE eadd LIKE '%madurai%' OR eadd LIKE '%trichy%';
+OUTPUT
+Modify the records (Update and Delete Queries)
+1) Change the salary as Rs 10000 for any one of the employee
+update employee set esal=10000 where eno=108
+OUTPUT
+2. Increase the salary Rs 2000 for all female employees.
+update employee set esal=esal+2000 where egender='F'
+OUTPUT
+3) Fix the salary Rs 6000 for all employees with the age less than 30.
+update employee set esal=6000 where eage<30
+OUTPUT
+4) Increase the salary Rs 1000 for all male employees working in the Department no 2.
+4. update employee set esal=esal+1000 where egender='M' and dno=2
+OUTPUT
+5) Fix the maximum salary for the employee With the age greater than 45
+UPDATE employee SET esal = (SELECT MAX(esal) FROM employee) WHERE eage > 45 and
+egender='M';
+OUTPUT
+6)Change the name of the employee as “johnson” whose eid is 103.
+update employee set ename='johnson' where eno=103
+OUTPUT
+7) Fix the average salary for all employees who is belongs to madurai or Trichy.
+UPDATE employee SET esal = (SELECT AVG(esal) FROM employee) WHERE eadd like'%madurai%'
+OR eadd like '%trichy%';
+OUTPUT
+8) Increase the salary Rs 2000 for the employee those who were born before 21st APR 1985.
+update employee set esal=esal+2000 where edob<'21-apr-1985'
+OUTPUT
+9)Change the head of the department name as “J. Rajkumar” for the Department no 104.
+update department set dhead='J.Rajkumar' where dno=4
+OUTPUT
+10. Give the 20% increment of the salary for the employee who are not belongs to the
+departmentno 2,3,4.
+Update employee set esal=esal*0.20where where dno not in (2,3,4)
+OUTPUT
+11) Delete the all employee details who get salary less than 5000.
+delete from employee wh ere esal<5000
+OUTPUT
+12) Delete the details of employee who belongs to Chennai.
+delete from employee where eadd like '%chennai%'
+OUTPUT
+13. Delete the employee details whose name start with the character “s”.
+delete from employee where ename like 's%'
+OUTPUT
+14. Delete the all female employee whose age reach greater than 45.
+delete from employee where egender='F' and eage>45
+OUTPUT
+15. Delete the employee records whose age between 2nd Dec 2005 and 3 rd Feb 2007.
+delete from employee where edob between '2-dec-2005' and '3-feb-2007'
+OUTPUT
+Modifying Tables (Alter, Truncate, rename, copy and Drop table)
+1) Add a new column ‘edes’ in employee table.
+ALTER TABLE employee ADD edes INTEGER;
+OUTPUT
+2. Add a multiple columns email and econtact in employee table
+ALTER TABLE employee
+ADD (email VARCHAR2(50), econtact VARCHAR2(20));
+OUTPUT
+3. Modify the size of the column eadd in employee tables.
+ALTER TABLE employee
+MODIFY eadd VARCHAR2(30);
+OUTPUT
+4. Modify the data type for the column esal as float format (precision- 5, Scale– 2)
+ALTER TABLE Employees
+MODIFY esal FLOAT(5, 2);
+OUTPUT
+5. Rename the employee table
+RENAME employee TO new_employee;
+OUTPUT
+6. Rename an existing column egender as esex in employee table
+ALTER TABLE new_employee
+RENAME COLUMN egender TO esex;
+7. Remove all the records from the employee table
+truncate table new_employee
+OUTPUT
+.
+8. Recover the deleted records of employee table
+-Restore the backup or re-insert the deleted records.
+OUTPUT
+9) Create the customer table and then drop it.
+CREATE TABLE Customer ( customer_id INT PRIMARY KEY, customer_name
+VARCHAR(255) );
+OUTPUT
+DROP TABLE Customer;
+OUTPUT
+10. Add default value for the field ‘email’ in employee table
+ALTER TABLE new_employee
+MODIFY email VARCHAR2(100) DEFAULT 'notavailable@example.com';
+OUTPUT
+11. Set the Not Null for the field ‘ename’ in employee table
+ALTER TABLE new_employee
+MODIFY ename VARCHAR2(50) NOT NULL;
+OUTPUT
+12) Drop the column email from employee table
+ALTER TABLE employee
+DROP COLUMN email;
+OUTPUT
+13. Enable and Disable the primary key constraint
+SELECT constraint_name
+FROM user_constraints
+WHERE table_name = 'NEW_EMPLOYEE' AND constraint_type = 'P';
+ALTER TABLE employee
+DISABLE CONSTRAINT pk_employee_eno;
+OUTPUT
+ALTER TABLE employee
+ENABLE CONSTRAINT SYS_C00xx;
+OUTPUT
+Result

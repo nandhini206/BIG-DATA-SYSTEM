@@ -1,0 +1,80 @@
+1. create a table named users in Cassandra with a column named emails as a set of text
+values
+CREATE TABLE users (
+user_id int PRIMARY KEY,
+fname text,
+lname text,
+emails set<text>
+);
+
+2. insert data into the emails set for a user with user_id 1234.
+INSERT INTO users (user_id, fname, lname, emails)
+VALUES(1234, 'Frodo', 'Baggins', {'f@baggins.com', 'baggins@gmail.com'});
+
+
+3. Retrieve the user_id and emails for the user with user_id 1234.
+SELECT user_id, emails FROM users WHERE user_id = 1234;
+
+4. Add the email address 'fb@friendsofmordor.org' to the set of emails for the user with
+user_id 1234
+
+UPDATE users SET emails = emails + {'fb@friendsofmordor.org'} WHERE user_id = 1234;
+5. Retrieve the user_id and updated emails for the user with user_id 1234 after adding the
+new email.
+SELECT user_id, emails FROM users WHERE user_id = 1234;
+
+6.Remove the email address 'fb@friendsofmordor.org' from the set of emails for the user
+with user_id 1234
+UPDATE users SET emails = emails - {'fb@friendsofmordor.org'} WHERE user_id = 1234;
+
+7.Remove all email addresses from the set for the user with user_id 1234.
+UPDATE users SET emails = {} WHERE user_id = 1234;
+(OR)
+DELETE emails FROM users WHERE user_id=1234;
+
+----------------------------------------------------------------------------------------
+
+1. Alter the users table to include a column named top_places as a list of text values
+ALTER TABLE users ADD top_places list<text>;
+
+2. Insert a list of the best places visited into the top_places column for the user with
+user_id 1234.
+UPDATE users SET top_places = [ 'rivendell', 'rohan' ] WHERE user_id = 1234;
+
+3.Add the place 'mordor' to the end of the list of top_places for the user with user_id 1234
+UPDATE users SET top_places = top_places + [ 'mordor' ] WHERE user_id = 1234;
+
+4. Update the second place in the list top_places to 'riddermark' for the user with user_id
+1234.
+ UPDATE users SET top_places =['rivendell','riddermark']  WHERE user_id = 1234;
+
+5.Remove the third place from the top_places list for the user with user_id 1234
+DELETE top_places[3] FROM users WHERE user_id = 1234;
+
+6.Remove all occurrences of 'riddermark' from the top_places list for the user with user_id
+1234.
+UPDATE users SET top_places = top_places - ['riddermark'] WHERE user_id = 1234;
+
+7.Retrieve the user_id and top_places list for the user with user_id 1234.
+SELECT user_id, top_places FROM users WHERE user_id = 1234;
+
+----------------------------------------------------------------------------------------
+1.Alter the users table to include a column named todo as a map with timestamp keys and
+text values
+ALTER TABLE users ADD todo map<timestamp, text>;
+2. Insert tasks into the todo map for the user with user_id 1234.
+UPDATE users SET todo = { '2012-9-24' : 'enter mordor', '2012-10-2 12:00' : 'throw ring into
+mount doom' } WHERE user_id = 1234;
+3. Add a task with the timestamp '2012-10-2 12:00' to the todo map for the user with
+user_id 1234
+UPDATE users SET todo['2012-10-2 12:00'] = 'throw my precious into mount doom' WHERE
+user_id = 1234;
+4. Insert tasks into the todo map for the user with user_id 1234 using the INSERT
+statement.
+INSERT INTO users (user_id, todo) VALUES ( 1234, { '2013-9-22 12:01' : 'birthday wishes to
+Bilbo', '2013-10-1 18:00' : 'Check into Inn of Prancing Pony' });
+5. Remove the task with the timestamp '2012-9-24' from the todo map for the user with
+user_id 1234
+DELETE todo['2012-9-24'] FROM users WHERE user_id = 1234;
+6.Retrieve the user_id and todo map for the user with user_id 1234.
+SELECT user_id, todo FROM users WHERE user_id = 1234;

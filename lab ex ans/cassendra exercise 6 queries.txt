@@ -1,0 +1,136 @@
+default_keyspaces;
+------------------------------------------------------------------------------
+use default_keyspace;
+-------------------------------------------------------------------------------
+create table users(
+                    ... user_id int,
+                    ... fname text,
+                    ... lname text,
+                    ... primary key((user_id),lname);
+-------------------------------------------------------------------------------
+INSERT INTO users (user_id, fname, lname) VALUES (1, 'John', 'Smith');
+INSERT INTO users (user_id, fname, lname) VALUES (2, 'Alice', 'Johnson');
+INSERT INTO users (user_id, fname, lname) VALUES (3, 'Bob', 'Brown');
+INSERT INTO users (user_id, fname, lname) VALUES (4, 'Emma', 'Davis');
+INSERT INTO users (user_id, fname, lname) VALUES (5, 'Michael', 'Miller');
+INSERT INTO users (user_id, fname, lname) VALUES (6, 'Olivia', 'Wilson');
+INSERT INTO users (user_id, fname, lname) VALUES (7, 'James', 'Taylor');
+INSERT INTO users (user_id, fname, lname) VALUES (8, 'Sophia', 'Anderson');
+INSERT INTO users (user_id, fname, lname) VALUES (9, 'William', 'Martinez');
+
+--------------------------------------------------------------------------------
+begin batch
+  ... INSERT INTO users (user_id, fname, lname) VALUES (10, 'rajini', 'kanth');
+  ... INSERT INTO users (user_id, fname, lname) VALUES (11, 'kamal', 'hassan');
+ ... apply batch;
+--------------------------------------------------------------------------------
+ Display only the user_id and fname columns from the users table:
+
+ select user_id,fname from users;
+--------------------------------------------------------------------------------
+Display data from the users table where lname is 'Smith'.
+
+select* from users where lname='smith' ALLOW FILTERING;
+--------------------------------------------------------------------------------
+9.Display data from the users table sorted by lname in descending order.
+
+SELECT * FROM users ORDER BY lname DESC;
+--------------------------------------------------------------------------------
+10.Display the first two rows from the users table.
+
+SELECT * FROM users LIMIT 2;
+--------------------------------------------------------------------------------
+11.Count the number of users with the same lname.
+
+SELECT lname, COUNT(*) as count FROM users GROUP BY lname;
+--------------------------------------------------------------------------------
+12. Display unique last names from the users table.
+
+SELECT DISTINCT lname FROM users;
+--------------------------------------------------------------------------------
+13. Update the telephone field for the user with user_id = 1745 to '21212121'.
+
+UPDATE users SET telephone = '21212121' WHERE user_id = 1745;
+--------------------------------------------------------------------------------
+14.Update both fname and lname of the user with user_id 1746.
+
+update users set fname='mike',telephone='123' where user_id=5 and lname='Miller';
+--------------------------------------------------------------------------------
+15. Increment the login_attempts counter for the user with user_id 1747 by 1.
+
+CREATE TABLE login_attempts (
+    user_id INT PRIMARY KEY,
+    login_counter COUNTER
+);
+UPDATE users SET login_attempts = login_attempts + 1 WHERE user_id = 1747;
+--------------------------------------------------------------------------------
+16.Update the email of the user with user_id 1748 only if it's currently null.
+
+alter table users add email varchar;
+
+update users set email='Example@gmail.com' where user_id=5 and lname='Miller' IF EXISTS;
+--------------------------------------------------------------------------------
+17.Update the password of the user with user_id 1745 only if the current password
+matches a specific value.
+
+update users set password='new_password' where user_id=5 and lname='Miller' if password='new_password';
+--------------------------------------------------------------------------------
+18. Use different types of data modification operations within a single batch operation in
+Cassandra.
+
+BEGIN BATCH
+                    ...     INSERT INTO users (user_id, lname, email, fname, password, telephone) VALUES (14, 'jey', 'hey@gmail.com', 'shnee', '14', '523');
+                    ...     UPDATE users SET fname = 'yog' WHERE user_id = 14 AND lname = 'jey';
+                    ...     DELETE FROM users WHERE user_id = 10;
+                    ... APPLY BATCH;
+
+--------------------------------------------------------------------------------
+19.Update multiple rows in a batch operation.
+BEGIN BATCH
+UPDATE users SET status = 'active' WHERE user_id = 1745;
+UPDATE users SET status = 'inactive' WHERE user_id = 1746;
+APPLY BATCH;
+--------------------------------------------------------------------------------
+20. Perform conditional updates on multiple rows using a batch operation
+BEGIN BATCH
+UPDATE users SET fname = 'Jonathan' WHERE user_id = 1745 IF lname = 'Smith';
+UPDATE users SET lname = 'Doe' WHERE user_id = 1746 IF fname = 'Jane';
+APPLY BATCH;
+
+or 
+
+BEGIN BATCH
+    UPDATE users SET fname = 'yogesh' WHERE user_id = 14 AND lname = 'jey' IF telephone = '523';
+APPLY BATCH;
+
+BEGIN BATCH
+    UPDATE users SET fname = 'yuva' WHERE user_id = 5 AND lname = 'Miller' IF telephone = '123';
+APPLY BATCH;
+
+--------------------------------------------------------------------------------
+21. Add a new field named telephone to the users table.
+ALTER TABLE users ADD telephone text;
+--------------------------------------------------------------------------------
+22.Delete the user with user_id 1745 from the users table.
+DELETE FROM users WHERE user_id = 1745;
+--------------------------------------------------------------------------------
+23. Delete the email column value for the user with user_id 1746.
+DELETE email FROM users WHERE user_id = 1746;
+--------------------------------------------------------------------------------
+24.Delete multiple users in a batch operation.
+BEGIN BATCH
+DELETE FROM users WHERE user_id = 1747;
+DELETE FROM users WHERE user_id = 1748;
+APPLY BATCH;
+--------------------------------------------------------------------------------
+25. Remove the users table.
+DROP TABLE users;
+--------------------------------------------------------------------------------
+26. Remove all data from the users table.
+TRUNCATE users;
+--------------------------------------------------------------------------------
+27. Create a table with a composite key
+CREATE TABLE tab2 ( id1 int, id2 int, first_name varchar, last_name varchar, PRIMARY KEY
+(id1, id2));
+--------------------------------------------------------------------------------
+
